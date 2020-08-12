@@ -6,6 +6,7 @@ mainMessageId = 0
 
 
 class BdoRolesBot(discord.Client):
+    # Initialization process, get current roles and create the message
     async def init_bot(self, channel):
         global mainMessageId, roles
 
@@ -38,9 +39,11 @@ class BdoRolesBot(discord.Client):
         for role in roles:
             await message.add_reaction(discord.utils.get(channel.guild.emojis, name=role))
 
+    # Bot is online
     async def on_ready(self):
         print(cfg.general['bot_started_message'])
 
+    # Bot receives a message
     async def on_message(self, message):
         if message.author == client.user:
             return
@@ -53,6 +56,7 @@ class BdoRolesBot(discord.Client):
             else:
                 await message.channel.send("This command can only be executed by the bot author!")
 
+    # Someone reacts on the created message
     async def on_reaction_add(self, reaction, user):
         global mainMessageId, roles
 
@@ -87,6 +91,7 @@ class BdoRolesBot(discord.Client):
                             delete_after=5,
                             allowed_mentions=discord.AllowedMentions(roles=True))
 
+    # Someone removes the reaction
     async def on_reaction_remove(self, reaction, user):
         global mainMessageId, roles
 
